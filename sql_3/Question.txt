@@ -1,0 +1,3 @@
+You will write SQL that finds the perfect numbers. 
+You will reach the result by completing the places that say "student code" in the file. 
+The output will be as in the picture.
