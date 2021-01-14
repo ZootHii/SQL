@@ -1,0 +1,87 @@
+-- ETRADE4 Database i kullanýldý
+-- JOIN ile INNER JOIN ayný þey
+-- LEFT JOIN ile LEFT OUTER JOIN ayný þey -- soldaki her þeyi getir ve saðda ki ortak olanlarý getir saðda yoksa null
+-- RIGHT JOIN ile RIGHT OUTER JOIN ayný þey -- saðda her þeyi getir ve solda ki ortak olanlarý getir solda yoksa null
+-- FULL JOIN -- iliþki olsun olmasýn hepsini getir ortak olmayan kýsýmlarý null
+
+-- 6 ayrý table ý foreign key ve primary key kullanarak birleþtirme iþlemi
+SELECT
+	U.NAMESURNAME
+	, U.GENDER
+	, A.ADDRESSTEXT
+	, C.COUNTRY
+	, CT.CITY
+	, T.TOWN
+	, D.DISTRICT
+FROM USERS AS U 
+JOIN ADDRESS AS A ON U.ID = A.USERID
+JOIN COUNTRIES AS C ON C.ID = A.COUNTRYID
+JOIN CITIES AS CT ON CT.ID = A.CITYID
+JOIN TOWNS AS T ON T.ID = A.TOWNID
+JOIN DISTRICTS AS D ON D.ID = A.DISTRICTID
+WHERE U.NAMESURNAME LIKE 'Abdulkadir ATAMAZ'
+
+-- Farklý bir örnek illere göre kullanýcý sayýsý
+SELECT
+	CT.CITY
+	, COUNT(U.ID) AS UserCount
+FROM USERS AS U 
+JOIN ADDRESS AS A ON U.ID = A.USERID
+JOIN COUNTRIES AS C ON C.ID = A.COUNTRYID
+JOIN CITIES AS CT ON CT.ID = A.CITYID
+JOIN TOWNS AS T ON T.ID = A.TOWNID
+JOIN DISTRICTS AS D ON D.ID = A.DISTRICTID
+GROUP BY CT.CITY
+
+-- Farklý bir örnek kiþilerin kaç ülke,þehir ve townda adresi var ikinci selecte bir örneðin kanýtýný görebiliriz
+--------------------------------------------
+SELECT
+	U.NAMESURNAME
+	, COUNT(DISTINCT C.ID) AS CountryCount
+	, COUNT(DISTINCT CT.ID) AS CityCount
+	, COUNT(DISTINCT T.ID) AS TownCount
+FROM USERS AS U 
+JOIN ADDRESS AS A ON U.ID = A.USERID
+JOIN COUNTRIES AS C ON C.ID = A.COUNTRYID
+JOIN CITIES AS CT ON CT.ID = A.CITYID
+JOIN TOWNS AS T ON T.ID = A.TOWNID
+JOIN DISTRICTS AS D ON D.ID = A.DISTRICTID
+GROUP BY U.NAMESURNAME
+SELECT
+	U.NAMESURNAME
+	, A.ADDRESSTEXT
+	, C.COUNTRY
+	, CT.CITY
+	, T.TOWN
+FROM USERS AS U 
+JOIN ADDRESS AS A ON U.ID = A.USERID
+JOIN COUNTRIES AS C ON C.ID = A.COUNTRYID
+JOIN CITIES AS CT ON CT.ID = A.CITYID
+JOIN TOWNS AS T ON T.ID = A.TOWNID
+JOIN DISTRICTS AS D ON D.ID = A.DISTRICTID
+WHERE U.NAMESURNAME LIKE 'Abdulkadir ATAMAZ'
+--------------------------------------------
+
+-- LEFT JOIN
+SELECT 
+	U.ID
+	, U.NAMESURNAME
+	, A.ADDRESSTEXT
+FROM USERS AS U
+LEFT JOIN ADDRESS AS A ON U.ID = A.USERID
+
+-- RIGHT JOIN
+SELECT
+	U.ID
+	, U.NAMESURNAME
+	, A.ADDRESSTEXT
+FROM USERS AS U 
+RIGHT JOIN ADDRESS AS A ON U.ID = A.USERID
+
+-- FULL JOIN
+SELECT
+	U.ID
+	, U.NAMESURNAME
+	, A.ADDRESSTEXT
+FROM USERS AS U 
+FULL JOIN ADDRESS AS A ON U.ID = A.USERID
